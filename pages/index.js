@@ -4,6 +4,8 @@ import styles from "../styles/Home.module.scss";
 import { useState, useEffect } from "react";
 import { ApolloClient, gql, useQuery, InMemoryCache } from "@apollo/client";
 import OrientationCard from "../components/OrientationCard";
+import LightCard from "../components/LightCard";
+import TemperatureCard from "../components/TemperatureCard";
 
 const { GRAPHQL_SERVER } = process.env;
 
@@ -18,6 +20,9 @@ const sensorQuery = gql`
       illuminance {
         value
       }
+      temperature {
+        celsius
+      }
       angles {
         roll
         pitch
@@ -29,7 +34,7 @@ const sensorQuery = gql`
 
 export default function Home({ init_data }) {
   const [light, setLight] = useState(
-    init_data.data.currentData[0].angles[0].roll
+    init_data.data.currentData[0].illuminance[0].value
   );
 
   const [orientation, setOrientation] = useState({
@@ -37,6 +42,10 @@ export default function Home({ init_data }) {
     pitch: init_data.data.currentData[0].angles[0].pitch,
     yaw: init_data.data.currentData[0].angles[0].yaw,
   });
+
+  const [temperature, setTemperature] = useState(
+    init_data.data.currentData[0].temperature[0].celsius
+  );
 
   const { data, loading, error } = useQuery(sensorQuery, {
     pollInterval: 100,
@@ -50,6 +59,7 @@ export default function Home({ init_data }) {
         pitch: data.currentData[0].angles[0].pitch,
         yaw: data.currentData[0].angles[0].yaw,
       });
+      setTemperature(data.currentData[0].temperature[0].celsius);
     }
   }, [data]);
 
@@ -68,9 +78,9 @@ export default function Home({ init_data }) {
       <main className={styles.flex}>
         <h1 className={styles.title}>Atom Drone App</h1>
         {/*<p className={styles.description}>Light value: {light}</p>*/}
+        <LightCard lightValue={light} />
         <OrientationCard orientation={orientation} />
-        <OrientationCard orientation={orientation} />
-        <OrientationCard orientation={orientation} />
+        <TemperatureCard tempValue={temperature} />
       </main>
 
       {/*<footer className={styles.footer}>

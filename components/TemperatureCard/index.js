@@ -1,6 +1,6 @@
-import styles from "./LightCard.module.scss";
+import styles from "./TemperatureCard.module.scss";
 
-const LightCard = ({ lightValue }) => {
+const TemperatureCard = ({ tempValue }) => {
   return (
     <div className={styles.card}>
       <img
@@ -10,23 +10,23 @@ const LightCard = ({ lightValue }) => {
       />
       <div className={styles["card-body"]}>
         <img
-          src="images/light.png"
-          alt="light icon"
+          src="images/temperature.png"
+          alt="temperature icon"
           width="100"
           height="100"
           className={styles["card-body-img"]}
         />
-        <h2 className={styles["card-body-title"]}>Light</h2>
-        <p className={styles["card-body-text"]}>Intensity:</p>
+        <h2 className={styles["card-body-title"]}>Temperature</h2>
+        <p className={styles["card-body-text"]}>Ambient:</p>
       </div>
       <div className={styles["card-footer"]}>
         <div className={styles["card-footer-variable"]}>
-          <p>Value:</p>
-          <h3>{lightValue}</h3>
+          <p>Value</p>
+          <h3>{tempValue}</h3>
         </div>
       </div>
     </div>
   );
 };
 
-export default LightCard;
+export default TemperatureCard;
